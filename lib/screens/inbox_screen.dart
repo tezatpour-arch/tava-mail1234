@@ -82,7 +82,7 @@ class _InboxScreenState extends State<InboxScreen> {
 
     // URL API اصلاح شد، از آی‌پی و پورت Django استفاده کن
     emailService = EmailService(
-      baseUrl: 'http://192.168.37.128:8000', // آی‌پی سرور تست
+      baseUrl: 'https://taha13801.pythonanywhere.com',
       authToken: widget.userToken,
     );
 
