@@ -12,15 +12,16 @@ jobs:
 
     steps:
       # 1. Checkout repository
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      # 2. Setup Flutter with exact version
+      # 2. Setup Flutter with exact version and force install
       - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@v2.21.0
         with:
           channel: stable
-          flutter-version: '3.13.8'   # Flutter version with Dart >=3.8
-          cache: false                # Prevent cache issues
+          flutter-version: '3.19.0'
+          cache: false
+          force-install: true
 
       # 3. Disable Flutter analytics
       - name: Disable Flutter analytics
@@ -40,32 +41,3 @@ jobs:
         with:
           name: app-release.apk
           path: build/app/outputs/flutter-apk/app-release.apk
-
-  # iOS job (requires Mac runner + Apple Developer account)
-  build_ios:
-    name: Build iOS IPA
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          flutter-version: '3.13.8'
-          cache: false
-
-      - name: Disable Flutter analytics
-        run: flutter config --no-analytics
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Build IPA
-        run: flutter build ipa --export-options-plist=ios/ExportOptions.plist
-
-      - name: Upload IPA
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release.ipa
-          path: build/ios/ipa/*.ipa
