@@ -1,0 +1,51 @@
+name: Build Flutter App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+# اگر Mac و حساب iOS دارید، این job را هم اضافه کنید:
+#   build_ios:
+#     name: Build iOS IPA
+#     runs-on: macos-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Set up Flutter
+#         uses: subosito/flutter-action@v2
+#         with:
+#           flutter-version: 'stable'
+#       - name: Install dependencies
+#         run: flutter pub get
+#       - name: Build IPA
+#         run: flutter build ipa --export-options-plist=ios/ExportOptions.plist
+#       - name: Upload IPA
+#         uses: actions/upload-artifact@v3
+#         with:
+#           name: app-release.ipa
+#           path: build/ios/ipa/*.ipa
