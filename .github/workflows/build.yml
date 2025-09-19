@@ -11,31 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repository
       - uses: actions/checkout@v4
 
-      # 2. Setup Flutter with exact version and force install
       - name: Set up Flutter
         uses: subosito/flutter-action@v2.21.0
         with:
+          flutter-version: '3.35.4'
           channel: stable
-          flutter-version: '3.19.0'
           cache: false
           force-install: true
 
-      # 3. Disable Flutter analytics
       - name: Disable Flutter analytics
         run: flutter config --no-analytics
 
-      # 4. Install dependencies
       - name: Install dependencies
         run: flutter pub get
 
-      # 5. Build Android APK
       - name: Build APK
         run: flutter build apk --release
 
-      # 6. Upload APK as artifact
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
